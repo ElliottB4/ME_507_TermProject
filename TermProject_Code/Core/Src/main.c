@@ -21,11 +21,28 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+
 #include <stdio.h>
+#include "math.h"
+#include "bno055.h"
+#include "bno055_stm32.h"
+#include "pid.h"
+#include "motor_driver.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
+
+PID_TypeDef VEL_PID;
+PID_TypeDef ACCEL_PID;
+PID_TypeDef PITCH_PID;
+
+typedef struct{
+	int16_t velocity;
+	int64_t position;
+	uint32_t last_counter_value;
+}encoder_instance;
 
 /* USER CODE END PTD */
 
@@ -43,7 +60,9 @@
 I2C_HandleTypeDef hi2c1;
 I2C_HandleTypeDef hi2c2;
 
+TIM_HandleTypeDef htim1;
 TIM_HandleTypeDef htim3;
+TIM_HandleTypeDef htim4;
 
 UART_HandleTypeDef huart1;
 
@@ -69,6 +88,54 @@ uint32_t usWidth2 = 0;
 int n;
 char buffer[50];
 
+int BNO_SampleRate;
+
+int Heading;
+int Roll;
+
+double Pitch, PITCH_PIDOut;
+
+
+char AngleBuf[50];
+
+int Vel_x;
+int Vel_y;
+int Vel_z;
+
+int Vel_x_Cap;
+int Vel_y_Cap;
+int Vel_z_Cap;
+
+int Vel_Capture = 0;
+
+double Vel_total, VEL_PIDOut, Vel_Setpoint = 0;
+
+int Vel_Setpoint_Factor;
+
+char VelBuf[50];
+
+double Accel_Total, ACC_PIDOut;
+
+char AngleBuf[50];
+
+motor_t mot1 = {.duty    = 0,
+				  .channel = 1,
+				  .timer = TIM1};
+motor_t mot2 = {.duty    = 0,
+				  .channel = 2,
+    			  .timer = TIM1};
+
+encoder_instance enc_instance_mot = {.position = 0,
+											.velocity = 0};
+
+int encoder_position;
+int encoder_velocity;
+int timer_counter;
+
+int duty;
+
+
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -78,6 +145,8 @@ static void MX_USART1_UART_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_I2C2_Init(void);
 static void MX_TIM3_Init(void);
+static void MX_TIM4_Init(void);
+static void MX_TIM1_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -120,8 +189,44 @@ int main(void)
   MX_I2C1_Init();
   MX_I2C2_Init();
   MX_TIM3_Init();
+  MX_TIM4_Init();
+  MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
 
+  // Initialize BNO
+
+  bno055_assignI2C(&hi2c1);
+  bno055_setup();
+  bno055_setOperationModeNDOF();
+
+  // Initialize PID's ( NEED TO LOOK INTO SAMPLETIME AND STUFF FOR OUR MCU I THINK?)
+
+  PID_SetMode(&VEL_PID, _PID_MODE_AUTOMATIC);
+  PID_SetSampleTime(&VEL_PID, 500);
+  PID_SetOutputLimits(&VEL_PID, 1, 100);
+
+  PID(&VEL_PID, &Vel_total, &VEL_PIDOut, &Vel_Setpoint, 2, 5, 1, _PID_P_ON_E, _PID_CD_DIRECT);
+
+  PID_SetMode(&ACCEL_PID, _PID_MODE_AUTOMATIC);
+  PID_SetSampleTime(&ACCEL_PID, 500);
+  PID_SetOutputLimits(&ACCEL_PID, 1, 100);
+
+  PID(&ACCEL_PID, &Accel_Total, &ACC_PIDOut, &VEL_PIDOut, 2, 5, 1, _PID_P_ON_E, _PID_CD_DIRECT);
+
+  PID_SetMode(&PITCH_PID, _PID_MODE_AUTOMATIC);
+  PID_SetSampleTime(&PITCH_PID, 500);
+  PID_SetOutputLimits(&PITCH_PID, 1, 100);
+
+  PID(&PITCH_PID, &Pitch, &PITCH_PIDOut, &ACC_PIDOut, 2, 5, 1, _PID_P_ON_E, _PID_CD_DIRECT);
+
+  HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL); // Enable Encoder mode on TIM3
+  HAL_TIM_Encoder_Start(&htim1, TIM_CHANNEL_ALL); // Enable Encoder mode on TIM1
+
+  HAL_TIM_IC_Start_IT(&htim3, TIM_CHANNEL_3);  // Enable Interrupts for E-Stop
+  HAL_TIM_IC_Start_IT(&htim3, TIM_CHANNEL_4);
+
+  HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);    // Enable PWM for motor driver input
+  HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_4);
 
 
   /* USER CODE END 2 */
@@ -134,11 +239,66 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
-	  n = sprintf(buffer, "Chan 1 Width: %d \r\n", usWidth);
-	  HAL_UART_Transmit(&huart1,buffer,n,400);
-	  n = sprintf(buffer, "Chan 2 Width: %d \r\n", usWidth2);
-	  HAL_UART_Transmit(&huart1,buffer,n,400);
-	  HAL_Delay(250);
+	  //n = sprintf(buffer, "Chan 1 Width: %d \r\n", usWidth);
+	  //HAL_UART_Transmit(&huart1,buffer,n,400);
+	  //n = sprintf(buffer, "Chan 2 Width: %d \r\n", usWidth2);
+	  //HAL_UART_Transmit(&huart1,buffer,n,400);
+	  //HAL_Delay(250);
+
+	  if (usWidth > 1750){
+		  // Turn Motors Off after E-Stop Hit
+	  }
+
+	  // Code to set Velocity Setpoint to RC input
+
+	  // Not sure if a negative vel setpoint will work or what magnitude
+	  // will work for the controller but we can tune the factor with the controllers
+
+	  Vel_Setpoint = ((usWidth2 - 1500) / Vel_Setpoint_Factor);
+
+
+	  // Get BNO Angles for PID
+	  // (Really only need the pitch; Also depends on where we secure it)
+
+	  bno055_vector_t a = bno055_getVectorEuler();
+	  Heading = a.x;
+	  Roll = a.y;
+	  Pitch = a.z;
+
+
+	  // Get BNO055 Linear Accel Data to Calculate Vel for PID
+	  // And use Accel for other PID
+
+	  bno055_vector_t v = bno055_getVectorLinearAccel();
+	  if ( (Vel_Capture = 1) ){
+		  Vel_x = (Vel_x_Cap - v.x) / BNO_SampleRate;   // BNO_SampleRate is a placeholder until
+		  Vel_y = (Vel_y_Cap - v.y) / BNO_SampleRate;   // I can figure out how to set it or
+		  Vel_z = (Vel_z_Cap - v.z) / BNO_SampleRate;   // Find it
+
+		  Vel_total = sqrt(pow(Vel_x,2) + pow(Vel_y,2));  // Vel Plugged into PID
+	  }
+
+	  // There is code to get the velocity from BNO as well as encoder
+
+	  Vel_x_Cap = v.x;  // First Captures for Vel Calcs
+	  Vel_y_Cap = v.y;
+	  Vel_z_Cap = v.z;
+
+	  Accel_Total = sqrt(pow(Vel_x_Cap,2) + pow(Vel_y_Cap,2));
+
+	  Vel_Capture = 1;    // Initial Accel Captured for Vel Calc
+
+	  // Compute PID's
+
+	  PID_Compute(&VEL_PID);			// Might need to have some sort of delays in all of this
+	  PID_Compute(&ACCEL_PID);			// But the idea is there for sure
+	  PID_Compute(&PITCH_PID);
+
+	  duty = &PITCH_PIDOut;   // Not sure about the types here for the pointer
+	  	  	  	  	  	  	  // (It's only a warning but idk if it'll mess up the code)
+
+	  set_duty(&mot1,duty);	// Set Duty Cycles to Output of Final PID in Cascade
+	  set_duty(&mot2,-duty);
 
   }
   /* USER CODE END 3 */
@@ -258,6 +418,56 @@ static void MX_I2C2_Init(void)
 }
 
 /**
+  * @brief TIM1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM1_Init(void)
+{
+
+  /* USER CODE BEGIN TIM1_Init 0 */
+
+  /* USER CODE END TIM1_Init 0 */
+
+  TIM_Encoder_InitTypeDef sConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM1_Init 1 */
+
+  /* USER CODE END TIM1_Init 1 */
+  htim1.Instance = TIM1;
+  htim1.Init.Prescaler = 0;
+  htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim1.Init.Period = 65535;
+  htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim1.Init.RepetitionCounter = 0;
+  htim1.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  sConfig.EncoderMode = TIM_ENCODERMODE_TI1;
+  sConfig.IC1Polarity = TIM_ICPOLARITY_RISING;
+  sConfig.IC1Selection = TIM_ICSELECTION_DIRECTTI;
+  sConfig.IC1Prescaler = TIM_ICPSC_DIV1;
+  sConfig.IC1Filter = 0;
+  sConfig.IC2Polarity = TIM_ICPOLARITY_RISING;
+  sConfig.IC2Selection = TIM_ICSELECTION_DIRECTTI;
+  sConfig.IC2Prescaler = TIM_ICPSC_DIV1;
+  sConfig.IC2Filter = 0;
+  if (HAL_TIM_Encoder_Init(&htim1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim1, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM1_Init 2 */
+
+  /* USER CODE END TIM1_Init 2 */
+
+}
+
+/**
   * @brief TIM3 Initialization Function
   * @param None
   * @retval None
@@ -306,6 +516,59 @@ static void MX_TIM3_Init(void)
   /* USER CODE BEGIN TIM3_Init 2 */
 
   /* USER CODE END TIM3_Init 2 */
+
+}
+
+/**
+  * @brief TIM4 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM4_Init(void)
+{
+
+  /* USER CODE BEGIN TIM4_Init 0 */
+
+  /* USER CODE END TIM4_Init 0 */
+
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+  TIM_OC_InitTypeDef sConfigOC = {0};
+
+  /* USER CODE BEGIN TIM4_Init 1 */
+
+  /* USER CODE END TIM4_Init 1 */
+  htim4.Instance = TIM4;
+  htim4.Init.Prescaler = 0;
+  htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim4.Init.Period = 65535;
+  htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_PWM_Init(&htim4) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim4, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 0;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  if (HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_4) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM4_Init 2 */
+
+  /* USER CODE END TIM4_Init 2 */
+  HAL_TIM_MspPostInit(&htim4);
 
 }
 
@@ -373,6 +636,20 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+// Encoder Updating Code (Only Reading data from one encoder right now but maybe
+// We wanna read both and compare to get an average or something)
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  timer_counter = __HAL_TIM_GET_COUNTER(&htim3);
+  // Only Reading Data from One Encoder Right now
+  update_encoder(&enc_instance_mot, &htim3);
+  encoder_position = enc_instance_mot.position;
+  encoder_velocity = enc_instance_mot.velocity;
+}
+
+// IC Interrupt for E-Stop and its Calcs
 
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
 
@@ -446,6 +723,55 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
 			}
 		}
 }
+
+// Encoder Updating Function
+
+void update_encoder(encoder_instance *encoder_value, TIM_HandleTypeDef *htim)
+ {
+uint32_t temp_counter = __HAL_TIM_GET_COUNTER(htim);
+static uint8_t first_time = 0;
+if(!first_time)
+{
+   encoder_value ->velocity = 0;
+   first_time = 1;
+}
+else
+{
+  if(temp_counter == encoder_value ->last_counter_value)
+  {
+    encoder_value ->velocity = 0;
+  }
+  else if(temp_counter > encoder_value ->last_counter_value)
+  {
+    if (__HAL_TIM_IS_TIM_COUNTING_DOWN(htim))
+    {
+      encoder_value ->velocity = -encoder_value ->last_counter_value -
+	(__HAL_TIM_GET_AUTORELOAD(htim)-temp_counter);
+    }
+    else
+    {
+      encoder_value ->velocity = temp_counter -
+           encoder_value ->last_counter_value;
+    }
+  }
+  else
+  {
+    if (__HAL_TIM_IS_TIM_COUNTING_DOWN(htim))
+    {
+	encoder_value ->velocity = temp_counter -
+            encoder_value ->last_counter_value;
+    }
+    else
+    {
+	encoder_value ->velocity = temp_counter +
+	(__HAL_TIM_GET_AUTORELOAD(htim) -
+              encoder_value ->last_counter_value);
+    }
+   }
+}
+encoder_value ->position += encoder_value ->velocity;
+encoder_value ->last_counter_value = temp_counter;
+ }
 
 /* USER CODE END 4 */
 

@@ -1,0 +1,3 @@
+../Core/Src/motor_driver.c:12:6:set_duty	16	static
+../Core/Src/motor_driver.c:43:6:start_PWM	16	static
+../Core/Src/motor_driver.c:51:6:stop_PWM	16	static
