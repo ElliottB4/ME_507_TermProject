@@ -56,6 +56,8 @@ void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
 
+double P_Controller(double *Kp, double *Error);
+
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/

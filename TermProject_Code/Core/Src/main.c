@@ -61,6 +61,7 @@ I2C_HandleTypeDef hi2c1;
 I2C_HandleTypeDef hi2c2;
 
 TIM_HandleTypeDef htim1;
+TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim4;
 
@@ -71,8 +72,8 @@ UART_HandleTypeDef huart1;
 int dc;
 int dc2;
 int test;
-#define TIMCLOCK   96000000
-#define TIMCLOCK2   96000000
+#define TIMCLOCK   48000000
+#define TIMCLOCK2   48000000
 #define PRESCALAR  0
 uint32_t IC_Val1 = 0;
 uint32_t IC_Val2 = 0;
@@ -91,16 +92,12 @@ char buffer[50];
 int BNO_SampleRate;
 
 int Heading;
-int Roll;
+double Roll;
 
 double Pitch, PITCH_PIDOut;
 
 
 char AngleBuf[50];
-
-int Vel_x;
-int Vel_y;
-int Vel_z;
 
 int Vel_x_Cap;
 int Vel_y_Cap;
@@ -119,21 +116,50 @@ double Accel_Total, ACC_PIDOut;
 char AngleBuf[50];
 
 motor_t mot1 = {.duty    = 0,
-				  .channel = 1,
-				  .timer = TIM1};
+				  .channel = 3,
+				  .timer = TIM4};
 motor_t mot2 = {.duty    = 0,
-				  .channel = 2,
-    			  .timer = TIM1};
+				  .channel = 4,
+    			  .timer = TIM4};
 
-encoder_instance enc_instance_mot = {.position = 0,
-											.velocity = 0};
+double encoder_ticks_1;
+double encoder_ticks_2;
+double first_t = 0;
+double second_t;
 
-int encoder_position;
-int encoder_velocity;
-int timer_counter;
+double velocity;
 
 int duty;
 
+double vel_setpoint = 0;
+
+double SetPoint;
+double Kp;
+double Input;
+double Output;
+
+int Vel_Output;
+int Angle_Output;
+int Acc_Output;
+
+double vel_gain = -100;
+double ang_gain = 30;
+
+double Diff;
+double Acc_Diff;
+
+double vel_offset = 98;
+
+double first_error_vel;
+double first_error_ang;
+double second_error_vel;
+double second_error_ang;
+
+double Derivative_Vel;
+double Derivative_Ang;
+
+double vel_d_gain = 0.01;
+double ang_d_gain = 0.05;
 
 
 /* USER CODE END PV */
@@ -147,6 +173,7 @@ static void MX_I2C2_Init(void);
 static void MX_TIM3_Init(void);
 static void MX_TIM4_Init(void);
 static void MX_TIM1_Init(void);
+static void MX_TIM2_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -191,36 +218,38 @@ int main(void)
   MX_TIM3_Init();
   MX_TIM4_Init();
   MX_TIM1_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
 
   // Initialize BNO
 
-  bno055_assignI2C(&hi2c1);
+  bno055_assignI2C(&hi2c2);
   bno055_setup();
   bno055_setOperationModeNDOF();
 
   // Initialize PID's ( NEED TO LOOK INTO SAMPLETIME AND STUFF FOR OUR MCU I THINK?)
 
-  PID_SetMode(&VEL_PID, _PID_MODE_AUTOMATIC);
-  PID_SetSampleTime(&VEL_PID, 500);
-  PID_SetOutputLimits(&VEL_PID, 1, 100);
+  //PID_SetMode(&VEL_PID, _PID_MODE_AUTOMATIC);
+  //PID_SetSampleTime(&VEL_PID, 500);
+  //PID_SetOutputLimits(&VEL_PID, 1, 100);
 
-  PID(&VEL_PID, &Vel_total, &VEL_PIDOut, &Vel_Setpoint, 2, 5, 1, _PID_P_ON_E, _PID_CD_DIRECT);
+  //PID(&VEL_PID, &Vel_total, &VEL_PIDOut, &Vel_Setpoint, 1, 0, 0, _PID_P_ON_E, _PID_CD_DIRECT);
 
-  PID_SetMode(&ACCEL_PID, _PID_MODE_AUTOMATIC);
-  PID_SetSampleTime(&ACCEL_PID, 500);
-  PID_SetOutputLimits(&ACCEL_PID, 1, 100);
+//  PID_SetMode(&ACCEL_PID, _PID_MODE_AUTOMATIC);
+//  PID_SetSampleTime(&ACCEL_PID, 500);
+//  PID_SetOutputLimits(&ACCEL_PID, 1, 100);
+//
+//  PID(&ACCEL_PID, &Accel_Total, &ACC_PIDOut, &VEL_PIDOut, 1, 0, 0, _PID_P_ON_E, _PID_CD_DIRECT);
+//
+//  PID_SetMode(&PITCH_PID, _PID_MODE_AUTOMATIC);
+//  PID_SetSampleTime(&PITCH_PID, 500);
+//  PID_SetOutputLimits(&PITCH_PID, 250,500);
+//
+//  PID(&PITCH_PID, &Roll, &PITCH_PIDOut, &ACC_PIDOut, 1, 0, 0, _PID_P_ON_E, _PID_CD_DIRECT);
 
-  PID(&ACCEL_PID, &Accel_Total, &ACC_PIDOut, &VEL_PIDOut, 2, 5, 1, _PID_P_ON_E, _PID_CD_DIRECT);
+  HAL_TIM_Encoder_Start(&htim1, TIM_CHANNEL_ALL); // Enable Encoder mode on TIM3
 
-  PID_SetMode(&PITCH_PID, _PID_MODE_AUTOMATIC);
-  PID_SetSampleTime(&PITCH_PID, 500);
-  PID_SetOutputLimits(&PITCH_PID, 1, 100);
-
-  PID(&PITCH_PID, &Pitch, &PITCH_PIDOut, &ACC_PIDOut, 2, 5, 1, _PID_P_ON_E, _PID_CD_DIRECT);
-
-  HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL); // Enable Encoder mode on TIM3
-  HAL_TIM_Encoder_Start(&htim1, TIM_CHANNEL_ALL); // Enable Encoder mode on TIM1
+  HAL_TIM_Base_Start_IT(&htim2);
 
   HAL_TIM_IC_Start_IT(&htim3, TIM_CHANNEL_3);  // Enable Interrupts for E-Stop
   HAL_TIM_IC_Start_IT(&htim3, TIM_CHANNEL_4);
@@ -241,12 +270,13 @@ int main(void)
 
 	  //n = sprintf(buffer, "Chan 1 Width: %d \r\n", usWidth);
 	  //HAL_UART_Transmit(&huart1,buffer,n,400);
-	  //n = sprintf(buffer, "Chan 2 Width: %d \r\n", usWidth2);
-	  //HAL_UART_Transmit(&huart1,buffer,n,400);
+//	  n = sprintf(buffer, "Chan 2 Width: %d \r\n", usWidth2);
+//	  HAL_UART_Transmit(&huart1,buffer,n,400);
 	  //HAL_Delay(250);
 
-	  if (usWidth > 1750){
-		  // Turn Motors Off after E-Stop Hit
+	  if ((usWidth2 > 500)&&(usWidth2 < 850)){
+		  set_duty(&mot1,0);
+		  exit(0);
 	  }
 
 	  // Code to set Velocity Setpoint to RC input
@@ -254,7 +284,7 @@ int main(void)
 	  // Not sure if a negative vel setpoint will work or what magnitude
 	  // will work for the controller but we can tune the factor with the controllers
 
-	  Vel_Setpoint = ((usWidth2 - 1500) / Vel_Setpoint_Factor);
+	  //Vel_Setpoint = ((usWidth2 - 1500) / Vel_Setpoint_Factor);
 
 
 	  // Get BNO Angles for PID
@@ -265,20 +295,10 @@ int main(void)
 	  Roll = a.y;
 	  Pitch = a.z;
 
-
 	  // Get BNO055 Linear Accel Data to Calculate Vel for PID
 	  // And use Accel for other PID
 
 	  bno055_vector_t v = bno055_getVectorLinearAccel();
-	  if ( (Vel_Capture = 1) ){
-		  Vel_x = (Vel_x_Cap - v.x) / BNO_SampleRate;   // BNO_SampleRate is a placeholder until
-		  Vel_y = (Vel_y_Cap - v.y) / BNO_SampleRate;   // I can figure out how to set it or
-		  Vel_z = (Vel_z_Cap - v.z) / BNO_SampleRate;   // Find it
-
-		  Vel_total = sqrt(pow(Vel_x,2) + pow(Vel_y,2));  // Vel Plugged into PID
-	  }
-
-	  // There is code to get the velocity from BNO as well as encoder
 
 	  Vel_x_Cap = v.x;  // First Captures for Vel Calcs
 	  Vel_y_Cap = v.y;
@@ -286,19 +306,28 @@ int main(void)
 
 	  Accel_Total = sqrt(pow(Vel_x_Cap,2) + pow(Vel_y_Cap,2));
 
-	  Vel_Capture = 1;    // Initial Accel Captured for Vel Calc
-
 	  // Compute PID's
 
-	  PID_Compute(&VEL_PID);			// Might need to have some sort of delays in all of this
-	  PID_Compute(&ACCEL_PID);			// But the idea is there for sure
-	  PID_Compute(&PITCH_PID);
+//	  PID_Compute(&VEL_PID);			// Might need to have some sort of delays in all of this
+//	  PID_Compute(&ACCEL_PID);			// But the idea is there for sure
+//	  PID_Compute(&PITCH_PID);
 
-	  duty = &PITCH_PIDOut;   // Not sure about the types here for the pointer
+
+	  Vel_Output = (vel_gain*velocity) + Derivative_Vel;
+
+	  Vel_Output = Vel_Output - vel_offset;
+
+//	  Acc_Diff = Vel_Output - Vel_z_Cap;
+//
+//	  Acc_Output = acc_gain*Acc_Diff;
+
+	  Diff = Vel_Output - Pitch;
+
+	  Angle_Output = (ang_gain * Diff) + Derivative_Ang;
+
+      duty = (int) -Angle_Output;   // Not sure about the types here for the pointer
 	  	  	  	  	  	  	  // (It's only a warning but idk if it'll mess up the code)
-
 	  set_duty(&mot1,duty);	// Set Duty Cycles to Output of Final PID in Cascade
-	  set_duty(&mot2,-duty);
 
   }
   /* USER CODE END 3 */
@@ -339,11 +368,11 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV2;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_3) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
   {
     Error_Handler();
   }
@@ -468,6 +497,51 @@ static void MX_TIM1_Init(void)
 }
 
 /**
+  * @brief TIM2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM2_Init(void)
+{
+
+  /* USER CODE BEGIN TIM2_Init 0 */
+
+  /* USER CODE END TIM2_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM2_Init 1 */
+
+  /* USER CODE END TIM2_Init 1 */
+  htim2.Instance = TIM2;
+  htim2.Init.Prescaler = 0;
+  htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim2.Init.Period = 1000000;
+  htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM2_Init 2 */
+
+  /* USER CODE END TIM2_Init 2 */
+
+}
+
+/**
   * @brief TIM3 Initialization Function
   * @param None
   * @retval None
@@ -540,7 +614,7 @@ static void MX_TIM4_Init(void)
   htim4.Instance = TIM4;
   htim4.Init.Prescaler = 0;
   htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim4.Init.Period = 65535;
+  htim4.Init.Period = 500;
   htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_PWM_Init(&htim4) != HAL_OK)
@@ -637,19 +711,14 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 
-// Encoder Updating Code (Only Reading data from one encoder right now but maybe
-// We wanna read both and compare to get an average or something)
-
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
-{
-  timer_counter = __HAL_TIM_GET_COUNTER(&htim3);
-  // Only Reading Data from One Encoder Right now
-  update_encoder(&enc_instance_mot, &htim3);
-  encoder_position = enc_instance_mot.position;
-  encoder_velocity = enc_instance_mot.velocity;
-}
-
 // IC Interrupt for E-Stop and its Calcs
+
+double P_Controller(double *Kp, double *Error){
+
+	Output = *Kp * *Error;
+
+	return Output;
+}
 
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
 
@@ -726,53 +795,31 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
 
 // Encoder Updating Function
 
-void update_encoder(encoder_instance *encoder_value, TIM_HandleTypeDef *htim)
- {
-uint32_t temp_counter = __HAL_TIM_GET_COUNTER(htim);
-static uint8_t first_time = 0;
-if(!first_time)
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-   encoder_value ->velocity = 0;
-   first_time = 1;
-}
-else
-{
-  if(temp_counter == encoder_value ->last_counter_value)
-  {
-    encoder_value ->velocity = 0;
-  }
-  else if(temp_counter > encoder_value ->last_counter_value)
-  {
-    if (__HAL_TIM_IS_TIM_COUNTING_DOWN(htim))
-    {
-      encoder_value ->velocity = -encoder_value ->last_counter_value -
-	(__HAL_TIM_GET_AUTORELOAD(htim)-temp_counter);
-    }
-    else
-    {
-      encoder_value ->velocity = temp_counter -
-           encoder_value ->last_counter_value;
-    }
-  }
-  else
-  {
-    if (__HAL_TIM_IS_TIM_COUNTING_DOWN(htim))
-    {
-	encoder_value ->velocity = temp_counter -
-            encoder_value ->last_counter_value;
-    }
-    else
-    {
-	encoder_value ->velocity = temp_counter +
-	(__HAL_TIM_GET_AUTORELOAD(htim) -
-              encoder_value ->last_counter_value);
-    }
-   }
-}
-encoder_value ->position += encoder_value ->velocity;
-encoder_value ->last_counter_value = temp_counter;
- }
 
+	  if (first_t == 0){
+		  first_t = HAL_GetTick();
+		  encoder_ticks_1 = TIM1->CNT;
+
+	  }
+	  else{
+		  second_t = HAL_GetTick();
+		  encoder_ticks_2 = TIM1->CNT;
+		  velocity = ((encoder_ticks_2-encoder_ticks_1)/(second_t-first_t))/20;
+		  first_t = 0;
+
+
+
+
+	  }
+	  second_error_vel = first_error_vel;
+	  first_error_vel = velocity;
+	  second_error_ang = first_error_ang;
+	  first_error_ang = Diff;
+	  Derivative_Vel = vel_d_gain * ((second_error_vel-first_error_vel)/(second_t-first_t));
+	  Derivative_Ang = ang_d_gain * ((second_error_ang-first_error_ang)/(second_t-first_t));
+}
 /* USER CODE END 4 */
 
 /**
