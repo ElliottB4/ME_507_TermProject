@@ -127,7 +127,8 @@ double encoder_ticks_2;
 double first_t = 0;
 double second_t;
 
-double velocity;
+double velocity = 0+
+		698;
 
 int duty;
 
@@ -142,16 +143,16 @@ int Vel_Output;
 int Angle_Output;
 int Acc_Output;
 
-double vel_gain = -100;
-double ang_gain = 30;
+double vel_gain = -30;
+double ang_gain = 15;
 
 double Diff;
 double Acc_Diff;
 
-double vel_offset = 98;
+double vel_offset = 91;
 
-double first_error_vel;
-double first_error_ang;
+double first_error_vel = 0;
+double first_error_ang = 0;
 double second_error_vel;
 double second_error_ang;
 
@@ -159,7 +160,7 @@ double Derivative_Vel;
 double Derivative_Ang;
 
 double vel_d_gain = 0.01;
-double ang_d_gain = 0.05;
+double ang_d_gain = 0.01;
 
 
 /* USER CODE END PV */
@@ -313,7 +314,7 @@ int main(void)
 //	  PID_Compute(&PITCH_PID);
 
 
-	  Vel_Output = (vel_gain*velocity) + Derivative_Vel;
+	  Vel_Output = (vel_gain*velocity);// + //Derivative_Vel;
 
 	  Vel_Output = Vel_Output - vel_offset;
 
@@ -325,8 +326,15 @@ int main(void)
 
 	  Angle_Output = (ang_gain * Diff) + Derivative_Ang;
 
+
       duty = (int) -Angle_Output;   // Not sure about the types here for the pointer
-	  	  	  	  	  	  	  // (It's only a warning but idk if it'll mess up the code)
+	  if (duty < 100 && duty > 0){
+		  duty = 100;
+	  }
+	  else if (duty > -100 && duty < 0){
+		  duty = -100;
+	  }
+      // (It's only a warning but idk if it'll mess up the code)
 	  set_duty(&mot1,duty);	// Set Duty Cycles to Output of Final PID in Cascade
 
   }
@@ -804,6 +812,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
 	  }
 	  else{
+
 		  second_t = HAL_GetTick();
 		  encoder_ticks_2 = TIM1->CNT;
 		  velocity = ((encoder_ticks_2-encoder_ticks_1)/(second_t-first_t))/20;
@@ -817,8 +826,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  first_error_vel = velocity;
 	  second_error_ang = first_error_ang;
 	  first_error_ang = Diff;
-	  Derivative_Vel = vel_d_gain * ((second_error_vel-first_error_vel)/(second_t-first_t));
-	  Derivative_Ang = ang_d_gain * ((second_error_ang-first_error_ang)/(second_t-first_t));
+	  Derivative_Vel = vel_d_gain * ((second_error_vel-first_error_vel)/(0.001));
+	  Derivative_Ang = ang_d_gain * ((second_error_ang-first_error_ang)/(0.001));
 }
 /* USER CODE END 4 */
 

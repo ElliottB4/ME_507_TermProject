@@ -60,8 +60,8 @@ all: main-build
 main-build: TermProject_Code.elf secondary-outputs
 
 # Tool invocations
-TermProject_Code.elf TermProject_Code.map: $(OBJS) $(USER_OBJS) C:\Users\Elliott\Documents\School\ME\ 507\Term\ Project\Software\TermProject_Code\STM32F411CEUX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "TermProject_Code.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\Elliott\Documents\School\ME 507\Term Project\Software\TermProject_Code\STM32F411CEUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="TermProject_Code.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+TermProject_Code.elf TermProject_Code.map: $(OBJS) $(USER_OBJS) C:\Users\magoo\OneDrive\Documents\GitHub\ME_507_TermProject\TermProject_Code\STM32F411CEUX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "TermProject_Code.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\magoo\OneDrive\Documents\GitHub\ME_507_TermProject\TermProject_Code\STM32F411CEUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="TermProject_Code.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
