@@ -1,0 +1,19 @@
+var searchData=
+[
+  ['vel_5fcapture_0',['Vel_Capture',['../main_8c.html#aca12137abdf8ee705f933d86d39026fb',1,'main.c']]],
+  ['vel_5fd_5fgain_1',['vel_d_gain',['../main_8c.html#ae2837e27d5e63702ed86a7bcceda8948',1,'main.c']]],
+  ['vel_5fgain_2',['vel_gain',['../main_8c.html#a1852ace247cc3b0ac006536eadd50e0b',1,'main.c']]],
+  ['vel_5foffset_3',['vel_offset',['../main_8c.html#a87a3d481b33880fed10ab76967840d26',1,'main.c']]],
+  ['vel_5foutput_4',['Vel_Output',['../main_8c.html#a9585bd0fd061513fe9957ce379cd317b',1,'main.c']]],
+  ['vel_5fpid_5',['VEL_PID',['../main_8c.html#a819e0d651f0f41a33588750e3a39d33f',1,'main.c']]],
+  ['vel_5fpidout_6',['VEL_PIDOut',['../main_8c.html#ad4541eb33074521bb386e43cf4d06ed8',1,'main.c']]],
+  ['vel_5fsetpoint_7',['Vel_Setpoint',['../main_8c.html#aff9b1896f27893991c7ecec786c5e060',1,'main.c']]],
+  ['vel_5fsetpoint_8',['vel_setpoint',['../main_8c.html#a148b2c2caff317d7fdd43b5a6ef1c266',1,'main.c']]],
+  ['vel_5fsetpoint_5ffactor_9',['Vel_Setpoint_Factor',['../main_8c.html#a0cc0e3f096d2dc7bd3356b9add464451',1,'main.c']]],
+  ['vel_5ftotal_10',['Vel_total',['../main_8c.html#a36b069483f61116163dc138eca35114f',1,'main.c']]],
+  ['vel_5fx_5fcap_11',['Vel_x_Cap',['../main_8c.html#a73335aee8818042221e15d9bbc80cd6f',1,'main.c']]],
+  ['vel_5fy_5fcap_12',['Vel_y_Cap',['../main_8c.html#a52abad06d4e954091f0919eff819cf0d',1,'main.c']]],
+  ['vel_5fz_5fcap_13',['Vel_z_Cap',['../main_8c.html#afa36c58c9d0eebb29cabbeb68fa981c1',1,'main.c']]],
+  ['velbuf_14',['VelBuf',['../main_8c.html#a39217dbebf858d7566566de7acfc2253',1,'main.c']]],
+  ['velocity_15',['velocity',['../structencoder__instance.html#a619d92b9edfc1c7038c7372124a6ed6d',1,'encoder_instance::velocity'],['../main_8c.html#accacf4e9263030d70ed79f8516c0eac5',1,'velocity:&#160;main.c']]]
+];

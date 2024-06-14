@@ -1,0 +1,288 @@
+\doxysection{Term\+Project\+\_\+\+Code/\+Core/\+Src/bno055.c File Reference}
+\hypertarget{bno055_8c}{}\label{bno055_8c}\index{TermProject\_Code/Core/Src/bno055.c@{TermProject\_Code/Core/Src/bno055.c}}
+{\ttfamily \#include "{}bno055.\+h"{}}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{bno055_8c_a3db6ec21eff1c67b424f945f08d5a908}{bno055\+\_\+set\+Page}} (uint8\+\_\+t page)
+\item 
+bno055\+\_\+opmode\+\_\+t \mbox{\hyperlink{bno055_8c_abc45f1152dc636187f9ff8e4e9ab3d50}{bno055\+\_\+get\+Operation\+Mode}} ()
+\item 
+void \mbox{\hyperlink{bno055_8c_aeb2ad3d63c946237008dd045511448cc}{bno055\+\_\+set\+Operation\+Mode}} (bno055\+\_\+opmode\+\_\+t mode)
+\item 
+void \mbox{\hyperlink{bno055_8c_a850562065f5f69da02cb02fc1a17846a}{bno055\+\_\+set\+Operation\+Mode\+Config}} ()
+\item 
+void \mbox{\hyperlink{bno055_8c_ada49bbadf03c049ccdd256525378e50e}{bno055\+\_\+set\+Operation\+Mode\+NDOF}} ()
+\item 
+void \mbox{\hyperlink{bno055_8c_aa7c98bd54e392b3dadc145451958f02d}{bno055\+\_\+set\+External\+Crystal\+Use}} (bool state)
+\item 
+void \mbox{\hyperlink{bno055_8c_ad433694d9d3bffe1de0d2dfa80f5060c}{bno055\+\_\+enable\+External\+Crystal}} ()
+\item 
+void \mbox{\hyperlink{bno055_8c_aba6b89e44fe2adc6be7841a6c9d0b32a}{bno055\+\_\+disable\+External\+Crystal}} ()
+\item 
+void \mbox{\hyperlink{bno055_8c_a898eb88c0ea93f37e1a57816ac13325b}{bno055\+\_\+reset}} ()
+\item 
+int8\+\_\+t \mbox{\hyperlink{bno055_8c_ab0ccd85ef6c7251bd2128852509deebd}{bno055\+\_\+get\+Temp}} ()
+\item 
+void \mbox{\hyperlink{bno055_8c_aeae2dd7e6d93be27b077a313bb0acb7c}{bno055\+\_\+setup}} ()
+\item 
+int16\+\_\+t \mbox{\hyperlink{bno055_8c_aeb37e65d5767e269c9c7b7139a9c5973}{bno055\+\_\+get\+SWRevision}} ()
+\item 
+uint8\+\_\+t \mbox{\hyperlink{bno055_8c_a2222fbd108614de296f19aba738ee376}{bno055\+\_\+get\+Bootloader\+Revision}} ()
+\item 
+uint8\+\_\+t \mbox{\hyperlink{bno055_8c_a9f31a355fa89cbdf32bffd6167ee74ed}{bno055\+\_\+get\+System\+Status}} ()
+\item 
+bno055\+\_\+self\+\_\+test\+\_\+result\+\_\+t \mbox{\hyperlink{bno055_8c_a17b64877741f390905aab70a7f9929af}{bno055\+\_\+get\+Self\+Test\+Result}} ()
+\item 
+uint8\+\_\+t \mbox{\hyperlink{bno055_8c_afae8714d24b5ea01f7205de5da9e560f}{bno055\+\_\+get\+System\+Error}} ()
+\item 
+bno055\+\_\+calibration\+\_\+state\+\_\+t \mbox{\hyperlink{bno055_8c_a962dc401248b3e8faf1e63ca27c025eb}{bno055\+\_\+get\+Calibration\+State}} ()
+\item 
+bno055\+\_\+calibration\+\_\+data\+\_\+t \mbox{\hyperlink{bno055_8c_ad81b44a9665ce2b0f4788c068f5cfcfd}{bno055\+\_\+get\+Calibration\+Data}} ()
+\item 
+void \mbox{\hyperlink{bno055_8c_a26997c3ef0fd0058ab2b63d5408cf9f1}{bno055\+\_\+set\+Calibration\+Data}} (bno055\+\_\+calibration\+\_\+data\+\_\+t cal\+Data)
+\item 
+bno055\+\_\+vector\+\_\+t \mbox{\hyperlink{bno055_8c_a74e0ecc5ddc91ffa5b4514ddc0b8b2d0}{bno055\+\_\+get\+Vector}} (uint8\+\_\+t vec)
+\item 
+bno055\+\_\+vector\+\_\+t \mbox{\hyperlink{bno055_8c_a0fe1853726a2994013bd95620fb57228}{bno055\+\_\+get\+Vector\+Accelerometer}} ()
+\item 
+bno055\+\_\+vector\+\_\+t \mbox{\hyperlink{bno055_8c_adcc793f3bbaeb417b4f5c251d90c6e5f}{bno055\+\_\+get\+Vector\+Magnetometer}} ()
+\item 
+bno055\+\_\+vector\+\_\+t \mbox{\hyperlink{bno055_8c_a348d5e5085c136488ae330bf6e6449fc}{bno055\+\_\+get\+Vector\+Gyroscope}} ()
+\item 
+bno055\+\_\+vector\+\_\+t \mbox{\hyperlink{bno055_8c_ae909f62dee3f40406a99d684af982ff5}{bno055\+\_\+get\+Vector\+Euler}} ()
+\item 
+bno055\+\_\+vector\+\_\+t \mbox{\hyperlink{bno055_8c_ad78e6b5cddeb730bc9852fb73482b315}{bno055\+\_\+get\+Vector\+Linear\+Accel}} ()
+\item 
+bno055\+\_\+vector\+\_\+t \mbox{\hyperlink{bno055_8c_a5f2602d237a162fb2a9dd9321926d8c5}{bno055\+\_\+get\+Vector\+Gravity}} ()
+\item 
+bno055\+\_\+vector\+\_\+t \mbox{\hyperlink{bno055_8c_a422815acd22b611df89605ef94085afa}{bno055\+\_\+get\+Vector\+Quaternion}} ()
+\item 
+void \mbox{\hyperlink{bno055_8c_aa2375497ac5c645584531405773cfd46}{bno055\+\_\+set\+Axis\+Map}} (bno055\+\_\+axis\+\_\+map\+\_\+t axis)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+uint16\+\_\+t \mbox{\hyperlink{bno055_8c_a26c3030f8b2acd651845ebcf98a4ccd6}{accel\+Scale}} = 100
+\item 
+uint16\+\_\+t \mbox{\hyperlink{bno055_8c_aecca0adc98950a3ffd0e39c91b437d7d}{temp\+Scale}} = 1
+\item 
+uint16\+\_\+t \mbox{\hyperlink{bno055_8c_ae08d6bab09bbad2742ae8fa58d593fd9}{angular\+Rate\+Scale}} = 16
+\item 
+uint16\+\_\+t \mbox{\hyperlink{bno055_8c_aec7d4dce5e083ef2ae64f092ffa56aef}{euler\+Scale}} = 16
+\item 
+uint16\+\_\+t \mbox{\hyperlink{bno055_8c_a29812b3a8fbddc6f34436791611bd908}{mag\+Scale}} = 16
+\item 
+uint16\+\_\+t \mbox{\hyperlink{bno055_8c_a8ed9dd5cf24ef652ad066f0fcfcfe21f}{qua\+Scale}} = (1$<$$<$14)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{bno055_8c_aba6b89e44fe2adc6be7841a6c9d0b32a}\label{bno055_8c_aba6b89e44fe2adc6be7841a6c9d0b32a} 
+\index{bno055.c@{bno055.c}!bno055\_disableExternalCrystal@{bno055\_disableExternalCrystal}}
+\index{bno055\_disableExternalCrystal@{bno055\_disableExternalCrystal}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{bno055\_disableExternalCrystal()}{bno055\_disableExternalCrystal()}}
+{\footnotesize\ttfamily void bno055\+\_\+disable\+External\+Crystal (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\Hypertarget{bno055_8c_ad433694d9d3bffe1de0d2dfa80f5060c}\label{bno055_8c_ad433694d9d3bffe1de0d2dfa80f5060c} 
+\index{bno055.c@{bno055.c}!bno055\_enableExternalCrystal@{bno055\_enableExternalCrystal}}
+\index{bno055\_enableExternalCrystal@{bno055\_enableExternalCrystal}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{bno055\_enableExternalCrystal()}{bno055\_enableExternalCrystal()}}
+{\footnotesize\ttfamily void bno055\+\_\+enable\+External\+Crystal (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\Hypertarget{bno055_8c_a2222fbd108614de296f19aba738ee376}\label{bno055_8c_a2222fbd108614de296f19aba738ee376} 
+\index{bno055.c@{bno055.c}!bno055\_getBootloaderRevision@{bno055\_getBootloaderRevision}}
+\index{bno055\_getBootloaderRevision@{bno055\_getBootloaderRevision}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{bno055\_getBootloaderRevision()}{bno055\_getBootloaderRevision()}}
+{\footnotesize\ttfamily uint8\+\_\+t bno055\+\_\+get\+Bootloader\+Revision (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\Hypertarget{bno055_8c_ad81b44a9665ce2b0f4788c068f5cfcfd}\label{bno055_8c_ad81b44a9665ce2b0f4788c068f5cfcfd} 
+\index{bno055.c@{bno055.c}!bno055\_getCalibrationData@{bno055\_getCalibrationData}}
+\index{bno055\_getCalibrationData@{bno055\_getCalibrationData}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{bno055\_getCalibrationData()}{bno055\_getCalibrationData()}}
+{\footnotesize\ttfamily bno055\+\_\+calibration\+\_\+data\+\_\+t bno055\+\_\+get\+Calibration\+Data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\Hypertarget{bno055_8c_a962dc401248b3e8faf1e63ca27c025eb}\label{bno055_8c_a962dc401248b3e8faf1e63ca27c025eb} 
+\index{bno055.c@{bno055.c}!bno055\_getCalibrationState@{bno055\_getCalibrationState}}
+\index{bno055\_getCalibrationState@{bno055\_getCalibrationState}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{bno055\_getCalibrationState()}{bno055\_getCalibrationState()}}
+{\footnotesize\ttfamily bno055\+\_\+calibration\+\_\+state\+\_\+t bno055\+\_\+get\+Calibration\+State (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\Hypertarget{bno055_8c_abc45f1152dc636187f9ff8e4e9ab3d50}\label{bno055_8c_abc45f1152dc636187f9ff8e4e9ab3d50} 
+\index{bno055.c@{bno055.c}!bno055\_getOperationMode@{bno055\_getOperationMode}}
+\index{bno055\_getOperationMode@{bno055\_getOperationMode}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{bno055\_getOperationMode()}{bno055\_getOperationMode()}}
+{\footnotesize\ttfamily bno055\+\_\+opmode\+\_\+t bno055\+\_\+get\+Operation\+Mode (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\Hypertarget{bno055_8c_a17b64877741f390905aab70a7f9929af}\label{bno055_8c_a17b64877741f390905aab70a7f9929af} 
+\index{bno055.c@{bno055.c}!bno055\_getSelfTestResult@{bno055\_getSelfTestResult}}
+\index{bno055\_getSelfTestResult@{bno055\_getSelfTestResult}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{bno055\_getSelfTestResult()}{bno055\_getSelfTestResult()}}
+{\footnotesize\ttfamily bno055\+\_\+self\+\_\+test\+\_\+result\+\_\+t bno055\+\_\+get\+Self\+Test\+Result (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\Hypertarget{bno055_8c_aeb37e65d5767e269c9c7b7139a9c5973}\label{bno055_8c_aeb37e65d5767e269c9c7b7139a9c5973} 
+\index{bno055.c@{bno055.c}!bno055\_getSWRevision@{bno055\_getSWRevision}}
+\index{bno055\_getSWRevision@{bno055\_getSWRevision}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{bno055\_getSWRevision()}{bno055\_getSWRevision()}}
+{\footnotesize\ttfamily int16\+\_\+t bno055\+\_\+get\+SWRevision (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\Hypertarget{bno055_8c_afae8714d24b5ea01f7205de5da9e560f}\label{bno055_8c_afae8714d24b5ea01f7205de5da9e560f} 
+\index{bno055.c@{bno055.c}!bno055\_getSystemError@{bno055\_getSystemError}}
+\index{bno055\_getSystemError@{bno055\_getSystemError}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{bno055\_getSystemError()}{bno055\_getSystemError()}}
+{\footnotesize\ttfamily uint8\+\_\+t bno055\+\_\+get\+System\+Error (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\Hypertarget{bno055_8c_a9f31a355fa89cbdf32bffd6167ee74ed}\label{bno055_8c_a9f31a355fa89cbdf32bffd6167ee74ed} 
+\index{bno055.c@{bno055.c}!bno055\_getSystemStatus@{bno055\_getSystemStatus}}
+\index{bno055\_getSystemStatus@{bno055\_getSystemStatus}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{bno055\_getSystemStatus()}{bno055\_getSystemStatus()}}
+{\footnotesize\ttfamily uint8\+\_\+t bno055\+\_\+get\+System\+Status (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\Hypertarget{bno055_8c_ab0ccd85ef6c7251bd2128852509deebd}\label{bno055_8c_ab0ccd85ef6c7251bd2128852509deebd} 
+\index{bno055.c@{bno055.c}!bno055\_getTemp@{bno055\_getTemp}}
+\index{bno055\_getTemp@{bno055\_getTemp}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{bno055\_getTemp()}{bno055\_getTemp()}}
+{\footnotesize\ttfamily int8\+\_\+t bno055\+\_\+get\+Temp (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\Hypertarget{bno055_8c_a74e0ecc5ddc91ffa5b4514ddc0b8b2d0}\label{bno055_8c_a74e0ecc5ddc91ffa5b4514ddc0b8b2d0} 
+\index{bno055.c@{bno055.c}!bno055\_getVector@{bno055\_getVector}}
+\index{bno055\_getVector@{bno055\_getVector}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{bno055\_getVector()}{bno055\_getVector()}}
+{\footnotesize\ttfamily bno055\+\_\+vector\+\_\+t bno055\+\_\+get\+Vector (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{vec }\end{DoxyParamCaption})}
+
+\Hypertarget{bno055_8c_a0fe1853726a2994013bd95620fb57228}\label{bno055_8c_a0fe1853726a2994013bd95620fb57228} 
+\index{bno055.c@{bno055.c}!bno055\_getVectorAccelerometer@{bno055\_getVectorAccelerometer}}
+\index{bno055\_getVectorAccelerometer@{bno055\_getVectorAccelerometer}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{bno055\_getVectorAccelerometer()}{bno055\_getVectorAccelerometer()}}
+{\footnotesize\ttfamily bno055\+\_\+vector\+\_\+t bno055\+\_\+get\+Vector\+Accelerometer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\Hypertarget{bno055_8c_ae909f62dee3f40406a99d684af982ff5}\label{bno055_8c_ae909f62dee3f40406a99d684af982ff5} 
+\index{bno055.c@{bno055.c}!bno055\_getVectorEuler@{bno055\_getVectorEuler}}
+\index{bno055\_getVectorEuler@{bno055\_getVectorEuler}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{bno055\_getVectorEuler()}{bno055\_getVectorEuler()}}
+{\footnotesize\ttfamily bno055\+\_\+vector\+\_\+t bno055\+\_\+get\+Vector\+Euler (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\Hypertarget{bno055_8c_a5f2602d237a162fb2a9dd9321926d8c5}\label{bno055_8c_a5f2602d237a162fb2a9dd9321926d8c5} 
+\index{bno055.c@{bno055.c}!bno055\_getVectorGravity@{bno055\_getVectorGravity}}
+\index{bno055\_getVectorGravity@{bno055\_getVectorGravity}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{bno055\_getVectorGravity()}{bno055\_getVectorGravity()}}
+{\footnotesize\ttfamily bno055\+\_\+vector\+\_\+t bno055\+\_\+get\+Vector\+Gravity (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\Hypertarget{bno055_8c_a348d5e5085c136488ae330bf6e6449fc}\label{bno055_8c_a348d5e5085c136488ae330bf6e6449fc} 
+\index{bno055.c@{bno055.c}!bno055\_getVectorGyroscope@{bno055\_getVectorGyroscope}}
+\index{bno055\_getVectorGyroscope@{bno055\_getVectorGyroscope}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{bno055\_getVectorGyroscope()}{bno055\_getVectorGyroscope()}}
+{\footnotesize\ttfamily bno055\+\_\+vector\+\_\+t bno055\+\_\+get\+Vector\+Gyroscope (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\Hypertarget{bno055_8c_ad78e6b5cddeb730bc9852fb73482b315}\label{bno055_8c_ad78e6b5cddeb730bc9852fb73482b315} 
+\index{bno055.c@{bno055.c}!bno055\_getVectorLinearAccel@{bno055\_getVectorLinearAccel}}
+\index{bno055\_getVectorLinearAccel@{bno055\_getVectorLinearAccel}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{bno055\_getVectorLinearAccel()}{bno055\_getVectorLinearAccel()}}
+{\footnotesize\ttfamily bno055\+\_\+vector\+\_\+t bno055\+\_\+get\+Vector\+Linear\+Accel (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\Hypertarget{bno055_8c_adcc793f3bbaeb417b4f5c251d90c6e5f}\label{bno055_8c_adcc793f3bbaeb417b4f5c251d90c6e5f} 
+\index{bno055.c@{bno055.c}!bno055\_getVectorMagnetometer@{bno055\_getVectorMagnetometer}}
+\index{bno055\_getVectorMagnetometer@{bno055\_getVectorMagnetometer}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{bno055\_getVectorMagnetometer()}{bno055\_getVectorMagnetometer()}}
+{\footnotesize\ttfamily bno055\+\_\+vector\+\_\+t bno055\+\_\+get\+Vector\+Magnetometer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\Hypertarget{bno055_8c_a422815acd22b611df89605ef94085afa}\label{bno055_8c_a422815acd22b611df89605ef94085afa} 
+\index{bno055.c@{bno055.c}!bno055\_getVectorQuaternion@{bno055\_getVectorQuaternion}}
+\index{bno055\_getVectorQuaternion@{bno055\_getVectorQuaternion}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{bno055\_getVectorQuaternion()}{bno055\_getVectorQuaternion()}}
+{\footnotesize\ttfamily bno055\+\_\+vector\+\_\+t bno055\+\_\+get\+Vector\+Quaternion (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\Hypertarget{bno055_8c_a898eb88c0ea93f37e1a57816ac13325b}\label{bno055_8c_a898eb88c0ea93f37e1a57816ac13325b} 
+\index{bno055.c@{bno055.c}!bno055\_reset@{bno055\_reset}}
+\index{bno055\_reset@{bno055\_reset}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{bno055\_reset()}{bno055\_reset()}}
+{\footnotesize\ttfamily void bno055\+\_\+reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\Hypertarget{bno055_8c_aa2375497ac5c645584531405773cfd46}\label{bno055_8c_aa2375497ac5c645584531405773cfd46} 
+\index{bno055.c@{bno055.c}!bno055\_setAxisMap@{bno055\_setAxisMap}}
+\index{bno055\_setAxisMap@{bno055\_setAxisMap}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{bno055\_setAxisMap()}{bno055\_setAxisMap()}}
+{\footnotesize\ttfamily void bno055\+\_\+set\+Axis\+Map (\begin{DoxyParamCaption}\item[{bno055\+\_\+axis\+\_\+map\+\_\+t}]{axis }\end{DoxyParamCaption})}
+
+\Hypertarget{bno055_8c_a26997c3ef0fd0058ab2b63d5408cf9f1}\label{bno055_8c_a26997c3ef0fd0058ab2b63d5408cf9f1} 
+\index{bno055.c@{bno055.c}!bno055\_setCalibrationData@{bno055\_setCalibrationData}}
+\index{bno055\_setCalibrationData@{bno055\_setCalibrationData}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{bno055\_setCalibrationData()}{bno055\_setCalibrationData()}}
+{\footnotesize\ttfamily void bno055\+\_\+set\+Calibration\+Data (\begin{DoxyParamCaption}\item[{bno055\+\_\+calibration\+\_\+data\+\_\+t}]{cal\+Data }\end{DoxyParamCaption})}
+
+\Hypertarget{bno055_8c_aa7c98bd54e392b3dadc145451958f02d}\label{bno055_8c_aa7c98bd54e392b3dadc145451958f02d} 
+\index{bno055.c@{bno055.c}!bno055\_setExternalCrystalUse@{bno055\_setExternalCrystalUse}}
+\index{bno055\_setExternalCrystalUse@{bno055\_setExternalCrystalUse}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{bno055\_setExternalCrystalUse()}{bno055\_setExternalCrystalUse()}}
+{\footnotesize\ttfamily void bno055\+\_\+set\+External\+Crystal\+Use (\begin{DoxyParamCaption}\item[{bool}]{state }\end{DoxyParamCaption})}
+
+\Hypertarget{bno055_8c_aeb2ad3d63c946237008dd045511448cc}\label{bno055_8c_aeb2ad3d63c946237008dd045511448cc} 
+\index{bno055.c@{bno055.c}!bno055\_setOperationMode@{bno055\_setOperationMode}}
+\index{bno055\_setOperationMode@{bno055\_setOperationMode}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{bno055\_setOperationMode()}{bno055\_setOperationMode()}}
+{\footnotesize\ttfamily void bno055\+\_\+set\+Operation\+Mode (\begin{DoxyParamCaption}\item[{bno055\+\_\+opmode\+\_\+t}]{mode }\end{DoxyParamCaption})}
+
+\Hypertarget{bno055_8c_a850562065f5f69da02cb02fc1a17846a}\label{bno055_8c_a850562065f5f69da02cb02fc1a17846a} 
+\index{bno055.c@{bno055.c}!bno055\_setOperationModeConfig@{bno055\_setOperationModeConfig}}
+\index{bno055\_setOperationModeConfig@{bno055\_setOperationModeConfig}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{bno055\_setOperationModeConfig()}{bno055\_setOperationModeConfig()}}
+{\footnotesize\ttfamily void bno055\+\_\+set\+Operation\+Mode\+Config (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\Hypertarget{bno055_8c_ada49bbadf03c049ccdd256525378e50e}\label{bno055_8c_ada49bbadf03c049ccdd256525378e50e} 
+\index{bno055.c@{bno055.c}!bno055\_setOperationModeNDOF@{bno055\_setOperationModeNDOF}}
+\index{bno055\_setOperationModeNDOF@{bno055\_setOperationModeNDOF}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{bno055\_setOperationModeNDOF()}{bno055\_setOperationModeNDOF()}}
+{\footnotesize\ttfamily void bno055\+\_\+set\+Operation\+Mode\+NDOF (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\Hypertarget{bno055_8c_a3db6ec21eff1c67b424f945f08d5a908}\label{bno055_8c_a3db6ec21eff1c67b424f945f08d5a908} 
+\index{bno055.c@{bno055.c}!bno055\_setPage@{bno055\_setPage}}
+\index{bno055\_setPage@{bno055\_setPage}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{bno055\_setPage()}{bno055\_setPage()}}
+{\footnotesize\ttfamily void bno055\+\_\+set\+Page (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{page }\end{DoxyParamCaption})}
+
+\Hypertarget{bno055_8c_aeae2dd7e6d93be27b077a313bb0acb7c}\label{bno055_8c_aeae2dd7e6d93be27b077a313bb0acb7c} 
+\index{bno055.c@{bno055.c}!bno055\_setup@{bno055\_setup}}
+\index{bno055\_setup@{bno055\_setup}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{bno055\_setup()}{bno055\_setup()}}
+{\footnotesize\ttfamily void bno055\+\_\+setup (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{bno055_8c_a26c3030f8b2acd651845ebcf98a4ccd6}\label{bno055_8c_a26c3030f8b2acd651845ebcf98a4ccd6} 
+\index{bno055.c@{bno055.c}!accelScale@{accelScale}}
+\index{accelScale@{accelScale}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{accelScale}{accelScale}}
+{\footnotesize\ttfamily uint16\+\_\+t accel\+Scale = 100}
+
+\Hypertarget{bno055_8c_ae08d6bab09bbad2742ae8fa58d593fd9}\label{bno055_8c_ae08d6bab09bbad2742ae8fa58d593fd9} 
+\index{bno055.c@{bno055.c}!angularRateScale@{angularRateScale}}
+\index{angularRateScale@{angularRateScale}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{angularRateScale}{angularRateScale}}
+{\footnotesize\ttfamily uint16\+\_\+t angular\+Rate\+Scale = 16}
+
+\Hypertarget{bno055_8c_aec7d4dce5e083ef2ae64f092ffa56aef}\label{bno055_8c_aec7d4dce5e083ef2ae64f092ffa56aef} 
+\index{bno055.c@{bno055.c}!eulerScale@{eulerScale}}
+\index{eulerScale@{eulerScale}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{eulerScale}{eulerScale}}
+{\footnotesize\ttfamily uint16\+\_\+t euler\+Scale = 16}
+
+\Hypertarget{bno055_8c_a29812b3a8fbddc6f34436791611bd908}\label{bno055_8c_a29812b3a8fbddc6f34436791611bd908} 
+\index{bno055.c@{bno055.c}!magScale@{magScale}}
+\index{magScale@{magScale}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{magScale}{magScale}}
+{\footnotesize\ttfamily uint16\+\_\+t mag\+Scale = 16}
+
+\Hypertarget{bno055_8c_a8ed9dd5cf24ef652ad066f0fcfcfe21f}\label{bno055_8c_a8ed9dd5cf24ef652ad066f0fcfcfe21f} 
+\index{bno055.c@{bno055.c}!quaScale@{quaScale}}
+\index{quaScale@{quaScale}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{quaScale}{quaScale}}
+{\footnotesize\ttfamily uint16\+\_\+t qua\+Scale = (1$<$$<$14)}
+
+\Hypertarget{bno055_8c_aecca0adc98950a3ffd0e39c91b437d7d}\label{bno055_8c_aecca0adc98950a3ffd0e39c91b437d7d} 
+\index{bno055.c@{bno055.c}!tempScale@{tempScale}}
+\index{tempScale@{tempScale}!bno055.c@{bno055.c}}
+\doxysubsubsection{\texorpdfstring{tempScale}{tempScale}}
+{\footnotesize\ttfamily uint16\+\_\+t temp\+Scale = 1}
+

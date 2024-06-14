@@ -1,0 +1,129 @@
+\doxysection{Term\+Project\+\_\+\+Code/\+Core/\+Src/pid.c File Reference}
+\hypertarget{pid_8c}{}\label{pid_8c}\index{TermProject\_Code/Core/Src/pid.c@{TermProject\_Code/Core/Src/pid.c}}
+{\ttfamily \#include "{}pid.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{pid_8c_ab0aa56bc0446a8ce562753d0b1e3a561}{PID\+\_\+\+Init}} (PID\+\_\+\+Type\+Def \texorpdfstring{$\ast$}{*}u\+PID)
+\item 
+void \mbox{\hyperlink{pid_8c_a61440d6beee848775daa6dda4ba001a5}{PID}} (PID\+\_\+\+Type\+Def \texorpdfstring{$\ast$}{*}u\+PID, double \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{main_8c_a5e25b69fc5e273b418ee495e7a16f6b7}{Input}}, double \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{main_8c_abe306616e5964581019974a7d94cffe2}{Output}}, double \texorpdfstring{$\ast$}{*}Setpoint, double \mbox{\hyperlink{main_8c_afd070d90e3f8bb3e9bb9c6dff310503b}{Kp}}, double Ki, double Kd, PIDPON\+\_\+\+Type\+Def POn, PIDCD\+\_\+\+Type\+Def Controller\+Direction)
+\item 
+void \mbox{\hyperlink{pid_8c_ad48c7eb25d609aba3feee6a9626beccd}{PID2}} (PID\+\_\+\+Type\+Def \texorpdfstring{$\ast$}{*}u\+PID, double \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{main_8c_a5e25b69fc5e273b418ee495e7a16f6b7}{Input}}, double \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{main_8c_abe306616e5964581019974a7d94cffe2}{Output}}, double \texorpdfstring{$\ast$}{*}Setpoint, double \mbox{\hyperlink{main_8c_afd070d90e3f8bb3e9bb9c6dff310503b}{Kp}}, double Ki, double Kd, PIDCD\+\_\+\+Type\+Def Controller\+Direction)
+\item 
+uint8\+\_\+t \mbox{\hyperlink{pid_8c_a4f599fcbb142025c31168033a846f6e1}{PID\+\_\+\+Compute}} (PID\+\_\+\+Type\+Def \texorpdfstring{$\ast$}{*}u\+PID)
+\item 
+void \mbox{\hyperlink{pid_8c_a5519df5fea741638b2d4d425df9e2351}{PID\+\_\+\+Set\+Mode}} (PID\+\_\+\+Type\+Def \texorpdfstring{$\ast$}{*}u\+PID, PIDMode\+\_\+\+Type\+Def Mode)
+\item 
+PIDMode\+\_\+\+Type\+Def \mbox{\hyperlink{pid_8c_a95fcb4338db480769a4ff41ff57b8710}{PID\+\_\+\+Get\+Mode}} (PID\+\_\+\+Type\+Def \texorpdfstring{$\ast$}{*}u\+PID)
+\item 
+void \mbox{\hyperlink{pid_8c_a707b6f4622902629e953fac49b5a791e}{PID\+\_\+\+Set\+Output\+Limits}} (PID\+\_\+\+Type\+Def \texorpdfstring{$\ast$}{*}u\+PID, double Min, double Max)
+\item 
+void \mbox{\hyperlink{pid_8c_a09f2add837a39da750bec8215a50cbb8}{PID\+\_\+\+Set\+Tunings}} (PID\+\_\+\+Type\+Def \texorpdfstring{$\ast$}{*}u\+PID, double \mbox{\hyperlink{main_8c_afd070d90e3f8bb3e9bb9c6dff310503b}{Kp}}, double Ki, double Kd)
+\item 
+void \mbox{\hyperlink{pid_8c_ad82ee80e83a5f45778945349de0f50c7}{PID\+\_\+\+Set\+Tunings2}} (PID\+\_\+\+Type\+Def \texorpdfstring{$\ast$}{*}u\+PID, double \mbox{\hyperlink{main_8c_afd070d90e3f8bb3e9bb9c6dff310503b}{Kp}}, double Ki, double Kd, PIDPON\+\_\+\+Type\+Def POn)
+\item 
+void \mbox{\hyperlink{pid_8c_ab699135b4899b8633d30b2a9c71e0cf3}{PID\+\_\+\+Set\+Controller\+Direction}} (PID\+\_\+\+Type\+Def \texorpdfstring{$\ast$}{*}u\+PID, PIDCD\+\_\+\+Type\+Def Direction)
+\item 
+PIDCD\+\_\+\+Type\+Def \mbox{\hyperlink{pid_8c_af1afd24572399b83dcbbc9c6ab7d394c}{PID\+\_\+\+Get\+Direction}} (PID\+\_\+\+Type\+Def \texorpdfstring{$\ast$}{*}u\+PID)
+\item 
+void \mbox{\hyperlink{pid_8c_a3307e16d0e755be53d0e7fcb7fe78e41}{PID\+\_\+\+Set\+Sample\+Time}} (PID\+\_\+\+Type\+Def \texorpdfstring{$\ast$}{*}u\+PID, int32\+\_\+t New\+Sample\+Time)
+\item 
+double \mbox{\hyperlink{pid_8c_a7a29b3da7225bf296b16673fa450d4bd}{PID\+\_\+\+Get\+Kp}} (PID\+\_\+\+Type\+Def \texorpdfstring{$\ast$}{*}u\+PID)
+\item 
+double \mbox{\hyperlink{pid_8c_aa9f94b24dc46fa11dd6e01461a662da6}{PID\+\_\+\+Get\+Ki}} (PID\+\_\+\+Type\+Def \texorpdfstring{$\ast$}{*}u\+PID)
+\item 
+double \mbox{\hyperlink{pid_8c_ab76395d7b25ca17229bb4e0c460e5896}{PID\+\_\+\+Get\+Kd}} (PID\+\_\+\+Type\+Def \texorpdfstring{$\ast$}{*}u\+PID)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{pid_8c_a61440d6beee848775daa6dda4ba001a5}\label{pid_8c_a61440d6beee848775daa6dda4ba001a5} 
+\index{pid.c@{pid.c}!PID@{PID}}
+\index{PID@{PID}!pid.c@{pid.c}}
+\doxysubsubsection{\texorpdfstring{PID()}{PID()}}
+{\footnotesize\ttfamily void PID (\begin{DoxyParamCaption}\item[{PID\+\_\+\+Type\+Def \texorpdfstring{$\ast$}{*}}]{u\+PID,  }\item[{double \texorpdfstring{$\ast$}{*}}]{Input,  }\item[{double \texorpdfstring{$\ast$}{*}}]{Output,  }\item[{double \texorpdfstring{$\ast$}{*}}]{Setpoint,  }\item[{double}]{Kp,  }\item[{double}]{Ki,  }\item[{double}]{Kd,  }\item[{PIDPON\+\_\+\+Type\+Def}]{POn,  }\item[{PIDCD\+\_\+\+Type\+Def}]{Controller\+Direction }\end{DoxyParamCaption})}
+
+\Hypertarget{pid_8c_ad48c7eb25d609aba3feee6a9626beccd}\label{pid_8c_ad48c7eb25d609aba3feee6a9626beccd} 
+\index{pid.c@{pid.c}!PID2@{PID2}}
+\index{PID2@{PID2}!pid.c@{pid.c}}
+\doxysubsubsection{\texorpdfstring{PID2()}{PID2()}}
+{\footnotesize\ttfamily void PID2 (\begin{DoxyParamCaption}\item[{PID\+\_\+\+Type\+Def \texorpdfstring{$\ast$}{*}}]{u\+PID,  }\item[{double \texorpdfstring{$\ast$}{*}}]{Input,  }\item[{double \texorpdfstring{$\ast$}{*}}]{Output,  }\item[{double \texorpdfstring{$\ast$}{*}}]{Setpoint,  }\item[{double}]{Kp,  }\item[{double}]{Ki,  }\item[{double}]{Kd,  }\item[{PIDCD\+\_\+\+Type\+Def}]{Controller\+Direction }\end{DoxyParamCaption})}
+
+\Hypertarget{pid_8c_a4f599fcbb142025c31168033a846f6e1}\label{pid_8c_a4f599fcbb142025c31168033a846f6e1} 
+\index{pid.c@{pid.c}!PID\_Compute@{PID\_Compute}}
+\index{PID\_Compute@{PID\_Compute}!pid.c@{pid.c}}
+\doxysubsubsection{\texorpdfstring{PID\_Compute()}{PID\_Compute()}}
+{\footnotesize\ttfamily uint8\+\_\+t PID\+\_\+\+Compute (\begin{DoxyParamCaption}\item[{PID\+\_\+\+Type\+Def \texorpdfstring{$\ast$}{*}}]{u\+PID }\end{DoxyParamCaption})}
+
+\Hypertarget{pid_8c_af1afd24572399b83dcbbc9c6ab7d394c}\label{pid_8c_af1afd24572399b83dcbbc9c6ab7d394c} 
+\index{pid.c@{pid.c}!PID\_GetDirection@{PID\_GetDirection}}
+\index{PID\_GetDirection@{PID\_GetDirection}!pid.c@{pid.c}}
+\doxysubsubsection{\texorpdfstring{PID\_GetDirection()}{PID\_GetDirection()}}
+{\footnotesize\ttfamily PIDCD\+\_\+\+Type\+Def PID\+\_\+\+Get\+Direction (\begin{DoxyParamCaption}\item[{PID\+\_\+\+Type\+Def \texorpdfstring{$\ast$}{*}}]{u\+PID }\end{DoxyParamCaption})}
+
+\Hypertarget{pid_8c_ab76395d7b25ca17229bb4e0c460e5896}\label{pid_8c_ab76395d7b25ca17229bb4e0c460e5896} 
+\index{pid.c@{pid.c}!PID\_GetKd@{PID\_GetKd}}
+\index{PID\_GetKd@{PID\_GetKd}!pid.c@{pid.c}}
+\doxysubsubsection{\texorpdfstring{PID\_GetKd()}{PID\_GetKd()}}
+{\footnotesize\ttfamily double PID\+\_\+\+Get\+Kd (\begin{DoxyParamCaption}\item[{PID\+\_\+\+Type\+Def \texorpdfstring{$\ast$}{*}}]{u\+PID }\end{DoxyParamCaption})}
+
+\Hypertarget{pid_8c_aa9f94b24dc46fa11dd6e01461a662da6}\label{pid_8c_aa9f94b24dc46fa11dd6e01461a662da6} 
+\index{pid.c@{pid.c}!PID\_GetKi@{PID\_GetKi}}
+\index{PID\_GetKi@{PID\_GetKi}!pid.c@{pid.c}}
+\doxysubsubsection{\texorpdfstring{PID\_GetKi()}{PID\_GetKi()}}
+{\footnotesize\ttfamily double PID\+\_\+\+Get\+Ki (\begin{DoxyParamCaption}\item[{PID\+\_\+\+Type\+Def \texorpdfstring{$\ast$}{*}}]{u\+PID }\end{DoxyParamCaption})}
+
+\Hypertarget{pid_8c_a7a29b3da7225bf296b16673fa450d4bd}\label{pid_8c_a7a29b3da7225bf296b16673fa450d4bd} 
+\index{pid.c@{pid.c}!PID\_GetKp@{PID\_GetKp}}
+\index{PID\_GetKp@{PID\_GetKp}!pid.c@{pid.c}}
+\doxysubsubsection{\texorpdfstring{PID\_GetKp()}{PID\_GetKp()}}
+{\footnotesize\ttfamily double PID\+\_\+\+Get\+Kp (\begin{DoxyParamCaption}\item[{PID\+\_\+\+Type\+Def \texorpdfstring{$\ast$}{*}}]{u\+PID }\end{DoxyParamCaption})}
+
+\Hypertarget{pid_8c_a95fcb4338db480769a4ff41ff57b8710}\label{pid_8c_a95fcb4338db480769a4ff41ff57b8710} 
+\index{pid.c@{pid.c}!PID\_GetMode@{PID\_GetMode}}
+\index{PID\_GetMode@{PID\_GetMode}!pid.c@{pid.c}}
+\doxysubsubsection{\texorpdfstring{PID\_GetMode()}{PID\_GetMode()}}
+{\footnotesize\ttfamily PIDMode\+\_\+\+Type\+Def PID\+\_\+\+Get\+Mode (\begin{DoxyParamCaption}\item[{PID\+\_\+\+Type\+Def \texorpdfstring{$\ast$}{*}}]{u\+PID }\end{DoxyParamCaption})}
+
+\Hypertarget{pid_8c_ab0aa56bc0446a8ce562753d0b1e3a561}\label{pid_8c_ab0aa56bc0446a8ce562753d0b1e3a561} 
+\index{pid.c@{pid.c}!PID\_Init@{PID\_Init}}
+\index{PID\_Init@{PID\_Init}!pid.c@{pid.c}}
+\doxysubsubsection{\texorpdfstring{PID\_Init()}{PID\_Init()}}
+{\footnotesize\ttfamily void PID\+\_\+\+Init (\begin{DoxyParamCaption}\item[{PID\+\_\+\+Type\+Def \texorpdfstring{$\ast$}{*}}]{u\+PID }\end{DoxyParamCaption})}
+
+\Hypertarget{pid_8c_ab699135b4899b8633d30b2a9c71e0cf3}\label{pid_8c_ab699135b4899b8633d30b2a9c71e0cf3} 
+\index{pid.c@{pid.c}!PID\_SetControllerDirection@{PID\_SetControllerDirection}}
+\index{PID\_SetControllerDirection@{PID\_SetControllerDirection}!pid.c@{pid.c}}
+\doxysubsubsection{\texorpdfstring{PID\_SetControllerDirection()}{PID\_SetControllerDirection()}}
+{\footnotesize\ttfamily void PID\+\_\+\+Set\+Controller\+Direction (\begin{DoxyParamCaption}\item[{PID\+\_\+\+Type\+Def \texorpdfstring{$\ast$}{*}}]{u\+PID,  }\item[{PIDCD\+\_\+\+Type\+Def}]{Direction }\end{DoxyParamCaption})}
+
+\Hypertarget{pid_8c_a5519df5fea741638b2d4d425df9e2351}\label{pid_8c_a5519df5fea741638b2d4d425df9e2351} 
+\index{pid.c@{pid.c}!PID\_SetMode@{PID\_SetMode}}
+\index{PID\_SetMode@{PID\_SetMode}!pid.c@{pid.c}}
+\doxysubsubsection{\texorpdfstring{PID\_SetMode()}{PID\_SetMode()}}
+{\footnotesize\ttfamily void PID\+\_\+\+Set\+Mode (\begin{DoxyParamCaption}\item[{PID\+\_\+\+Type\+Def \texorpdfstring{$\ast$}{*}}]{u\+PID,  }\item[{PIDMode\+\_\+\+Type\+Def}]{Mode }\end{DoxyParamCaption})}
+
+\Hypertarget{pid_8c_a707b6f4622902629e953fac49b5a791e}\label{pid_8c_a707b6f4622902629e953fac49b5a791e} 
+\index{pid.c@{pid.c}!PID\_SetOutputLimits@{PID\_SetOutputLimits}}
+\index{PID\_SetOutputLimits@{PID\_SetOutputLimits}!pid.c@{pid.c}}
+\doxysubsubsection{\texorpdfstring{PID\_SetOutputLimits()}{PID\_SetOutputLimits()}}
+{\footnotesize\ttfamily void PID\+\_\+\+Set\+Output\+Limits (\begin{DoxyParamCaption}\item[{PID\+\_\+\+Type\+Def \texorpdfstring{$\ast$}{*}}]{u\+PID,  }\item[{double}]{Min,  }\item[{double}]{Max }\end{DoxyParamCaption})}
+
+\Hypertarget{pid_8c_a3307e16d0e755be53d0e7fcb7fe78e41}\label{pid_8c_a3307e16d0e755be53d0e7fcb7fe78e41} 
+\index{pid.c@{pid.c}!PID\_SetSampleTime@{PID\_SetSampleTime}}
+\index{PID\_SetSampleTime@{PID\_SetSampleTime}!pid.c@{pid.c}}
+\doxysubsubsection{\texorpdfstring{PID\_SetSampleTime()}{PID\_SetSampleTime()}}
+{\footnotesize\ttfamily void PID\+\_\+\+Set\+Sample\+Time (\begin{DoxyParamCaption}\item[{PID\+\_\+\+Type\+Def \texorpdfstring{$\ast$}{*}}]{u\+PID,  }\item[{int32\+\_\+t}]{New\+Sample\+Time }\end{DoxyParamCaption})}
+
+\Hypertarget{pid_8c_a09f2add837a39da750bec8215a50cbb8}\label{pid_8c_a09f2add837a39da750bec8215a50cbb8} 
+\index{pid.c@{pid.c}!PID\_SetTunings@{PID\_SetTunings}}
+\index{PID\_SetTunings@{PID\_SetTunings}!pid.c@{pid.c}}
+\doxysubsubsection{\texorpdfstring{PID\_SetTunings()}{PID\_SetTunings()}}
+{\footnotesize\ttfamily void PID\+\_\+\+Set\+Tunings (\begin{DoxyParamCaption}\item[{PID\+\_\+\+Type\+Def \texorpdfstring{$\ast$}{*}}]{u\+PID,  }\item[{double}]{Kp,  }\item[{double}]{Ki,  }\item[{double}]{Kd }\end{DoxyParamCaption})}
+
+\Hypertarget{pid_8c_ad82ee80e83a5f45778945349de0f50c7}\label{pid_8c_ad82ee80e83a5f45778945349de0f50c7} 
+\index{pid.c@{pid.c}!PID\_SetTunings2@{PID\_SetTunings2}}
+\index{PID\_SetTunings2@{PID\_SetTunings2}!pid.c@{pid.c}}
+\doxysubsubsection{\texorpdfstring{PID\_SetTunings2()}{PID\_SetTunings2()}}
+{\footnotesize\ttfamily void PID\+\_\+\+Set\+Tunings2 (\begin{DoxyParamCaption}\item[{PID\+\_\+\+Type\+Def \texorpdfstring{$\ast$}{*}}]{u\+PID,  }\item[{double}]{Kp,  }\item[{double}]{Ki,  }\item[{double}]{Kd,  }\item[{PIDPON\+\_\+\+Type\+Def}]{POn }\end{DoxyParamCaption})}
+
